@@ -1,0 +1,21 @@
+# Render Blueprint for a bounded free-tier deployment experiment.
+# This is a proof of concept, not a production guarantee:
+# - Render Free services sleep after inactivity and use ephemeral storage.
+# - The Presenton Docker image is resource-heavy; builds or generation may fail
+#   under free-tier memory/CPU limits.
+# - Do not use this service for important files until persistent storage/backups
+#   and end-to-end exports have been validated.
+services:
+  - type: web
+    name: aprimora-ppt
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /
+    autoDeploy: false
+    envVars:
+      - key: START_OLLAMA
+        value: "false"
+      - key: PRESENTON_COMMUNITY_ENABLED
+        value: "true"
